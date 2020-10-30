@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:fluttershare/pages/edit_profile.dart';
 import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/header.dart';
 import 'package:fluttershare/widgets/progress.dart';
@@ -13,8 +14,47 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final String currentUserId = currentUser?.id;
+
+  editProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditProfile(currentUserId: currentUserId)));
+  }
+
+  Container buildButton({String text, Function function}) {
+    return Container(
+      padding: EdgeInsets.only(top: 2.0),
+      child: FlatButton(
+        onPressed: function,
+        child: Container(
+          width: 220.0,
+          height: 27.0,
+          child: Text(text,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            border: Border.all(
+              color: Colors.blue,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+      ),
+    );
+  }
+
   buildProfileButton() {
-    return Text("Profile Button");
+    bool isProfileOwner = currentUserId == widget.profileId;
+    if (isProfileOwner) {
+      return buildButton(
+        text: "Edit Profile",
+        function: editProfile,
+      );
+    }
   }
 
   Column buildCountColumn(String label, int count) {
@@ -24,7 +64,8 @@ class _ProfileState extends State<Profile> {
       children: [
         Text(
           count.toString(),
-          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         Container(
           margin: EdgeInsets.only(top: 4.0),
@@ -76,7 +117,7 @@ class _ProfileState extends State<Profile> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              //buildProfileButton(),
+                              buildProfileButton(),
                             ],
                           )
                         ],
@@ -89,8 +130,10 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.only(top: 6.0),
                   child: Text(
                     user.displayName,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        color: Colors.white),
                   ),
                 ),
                 Container(
@@ -99,15 +142,15 @@ class _ProfileState extends State<Profile> {
                   child: Text(
                     user.username,
                     style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                    ),
+                        fontWeight: FontWeight.normal, color: Colors.white),
                   ),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(top: 2.0),
+                  padding: EdgeInsets.only(top: 4.0),
                   child: Text(
                     user.bio,
+                    style: TextStyle(color: Colors.white),
                   ),
                 )
               ],
@@ -119,6 +162,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: header(context, titleText: "Profile"),
       body: ListView(
         children: <Widget>[buildProfileHeader()],

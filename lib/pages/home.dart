@@ -133,9 +133,10 @@ class _HomeState extends State<Home> {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: CupertinoTabBar(
+          backgroundColor: Colors.grey[900],
           currentIndex: pageIndex,
           onTap: onTap,
-          activeColor: Theme.of(context).primaryColor,
+          activeColor: Colors.white,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.whatshot)),
             BottomNavigationBarItem(icon: Icon(Icons.notifications_active)),

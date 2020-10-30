@@ -13,8 +13,12 @@ class _TimelineState extends State<Timeline> {
   @override
   Widget build(context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: header(context, isAppTitle: true),
-      body: Text('Timeline'),
+      body: Text(
+        'Timeline',
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 }
