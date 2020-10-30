@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/widgets/header.dart';
 
 class ActivityFeed extends StatefulWidget {
   @override
@@ -8,7 +9,14 @@ class ActivityFeed extends StatefulWidget {
 class _ActivityFeedState extends State<ActivityFeed> {
   @override
   Widget build(BuildContext context) {
-    return Text('Activity Feed');
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: header(context, isAppTitle: false, titleText: 'Acivity Feed'),
+      body: Text(
+        'Activity Feed',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
 }
 

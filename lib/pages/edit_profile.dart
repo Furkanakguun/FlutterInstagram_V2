@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
@@ -108,6 +110,11 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  logout() async {
+    await googleSignIn.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +159,7 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ),
                       RaisedButton(
-                        onPressed: updateProfileData(),
+                        onPressed: updateProfileData,
                         child: Text(
                           "Update Profie",
                           style: TextStyle(
@@ -164,7 +171,7 @@ class _EditProfileState extends State<EditProfile> {
                       Padding(
                         padding: EdgeInsets.all(16.0),
                         child: FlatButton.icon(
-                          onPressed: () => print('logot'),
+                          onPressed: logout,
                           icon: Icon(Icons.cancel),
                           label: Text(
                             'Log Out',
