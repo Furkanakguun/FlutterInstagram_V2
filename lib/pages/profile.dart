@@ -11,7 +11,6 @@ import 'package:fluttershare/widgets/progress.dart';
 
 class Profile extends StatefulWidget {
   final String profileId;
-
   Profile({this.profileId});
 
   @override
