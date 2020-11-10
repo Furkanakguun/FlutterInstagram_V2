@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:fluttershare/pages/activity_feed.dart';
 import 'package:fluttershare/pages/comments.dart';
 import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/custom_image.dart';
@@ -107,7 +108,7 @@ class _PostState extends State<Post> {
             backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () => print('showing profile'),
+            onTap: () => showProfile(context, profileId: user.id),
             child: Text(
               user.username,
               style: TextStyle(
@@ -135,7 +136,7 @@ class _PostState extends State<Post> {
           .collection('userPosts')
           .document(postId)
           .updateData({'likes.$currentUserId': false});
-      removeLikeFromAcivityFeed();
+      removeLikeFromActivityFeed();
       setState(() {
         likeCount -= 1;
         isLiked = false;
@@ -147,7 +148,7 @@ class _PostState extends State<Post> {
           .collection('userPosts')
           .document(postId)
           .updateData({'likes.$currentUserId': true});
-      addLikeToAcivityFeed();
+      addLikeToActivityFeed();
       setState(() {
         likeCount += 1;
         isLiked = true;
@@ -162,12 +163,13 @@ class _PostState extends State<Post> {
     }
   }
 
-  addLikeToAcivityFeed() {
+  addLikeToActivityFeed() {
+    // add a notification to the postOwner's activity feed only if comment made by OTHER user (to avoid getting notification for our own like)
     bool isNotPostOwner = currentUserId != ownerId;
     if (isNotPostOwner) {
       activityFeedRef
           .document(ownerId)
-          .collection('feedItem')
+          .collection("feedItems")
           .document(postId)
           .setData({
         "type": "like",
@@ -176,17 +178,17 @@ class _PostState extends State<Post> {
         "userProfileImg": currentUser.photoUrl,
         "postId": postId,
         "mediaUrl": mediaUrl,
-        "timestamp": timestamp
+        "timestamp": timestamp,
       });
     }
   }
 
-  removeLikeFromAcivityFeed() {
+  removeLikeFromActivityFeed() {
     bool isNotPostOwner = currentUserId != ownerId;
     if (isNotPostOwner) {
       activityFeedRef
           .document(ownerId)
-          .collection('feedItem')
+          .collection("feedItems")
           .document(postId)
           .get()
           .then((doc) {
