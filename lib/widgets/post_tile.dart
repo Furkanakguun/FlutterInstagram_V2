@@ -6,7 +6,7 @@ import 'package:fluttershare/widgets/post.dart';
 class PostTile extends StatelessWidget {
   final Post post;
 
-  const PostTile({this.post});
+  PostTile(this.post);
 
   showPost(context) {
     Navigator.push(
